@@ -35,9 +35,23 @@ def game_over(screen: pg.Surface) -> None:
     引数：screen
     戻り値：なし
     """
+
+    gg_img = pg.Surface((WIDTH, HEIGHT))
+    pg.draw.rect(gg_img, ("#000000"), (0,0,WIDTH, HEIGHT))
+    pg.Surface.set_alpha(gg_img, 128)
+    gg_rct = gg_img.get_rect()
+    gg_rct.center = WIDTH/2,HEIGHT/2
+    screen.blit(gg_img, gg_rct)
+
     fonto = pg.font.Font(None, 80)
-    txt = fonto.render("Game Over", True, (0, 0, 0))
-    screen.blit(txt, [400, 250])
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+    screen.blit(txt, [WIDTH/2-100, HEIGHT/2-50])
+  
+    nn_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 0.9)
+    nn_rct = nn_img.get_rect()
+    nn_rct.center = WIDTH/2, HEIGHT/2
+    screen.blit(nn_img, [WIDTH/2-140, HEIGHT/2-50])
+    screen.blit(nn_img, [WIDTH/2+220, HEIGHT/2-50])
 
     time_sleep(5)
 
