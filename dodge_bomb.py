@@ -85,7 +85,28 @@ def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface :
     引数：タプル
     戻り値：Surface
     """
-    kk_img = pg.Surface((10,10))
+    kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
+    if sum_mv[0] >0:
+        if sum_mv[1] >0: 
+            kk_img = pg.transform.rotate(kk_img,135)
+        elif sum_mv[1] == 0:
+            kk_img = pg.transform.rotate(kk_img, 180)
+        else:
+            kk_img = pg.transform.rotate(kk_img, -135)
+    elif sum_mv[0] ==0:
+        if sum_mv[1] >0: 
+            kk_img = pg.transform.rotate(kk_img,90)
+        elif sum_mv[1] == 0:
+            kk_img = pg.transform.rotate(kk_img,0)
+        else:
+            kk_img = pg.transform.rotate(kk_img,-90)
+    else:
+        if sum_mv[1] >0: 
+            kk_img = pg.transform.rotate(kk_img,45)
+        elif sum_mv[1] == 0:
+            kk_img = pg.transform.rotate(kk_img,0)
+        else:
+            kk_img = pg.transform.rotate(kk_img,-45)
 
     return kk_img
 
@@ -112,6 +133,7 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+        
         screen.blit(bg_img, [0, 0]) 
 
         # こうかとんと爆弾が重なってたら
@@ -131,6 +153,9 @@ def main():
         if check_bound(kk_rct) != (True, True):  # 画面外だったら
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
+        
+        kk_img = get_kk_img((0,0))
+        kk_img = get_kk_img(tuple(sum_mv))
         screen.blit(kk_img, kk_rct)
 
         # 爆弾変化
