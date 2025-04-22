@@ -61,6 +61,25 @@ def time_sleep(time: int) -> None:
     pg.time.wait(time*1000)
 
 
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    """
+    引数：なし
+    戻り値：拡大リストと速度リスト
+    """
+    
+    # 加速度
+    bb_accs = [a for a in range(1, 11)]
+
+    # 拡大
+    kakudais=[]
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        kakudais.append(bb_img)
+        bb_img.set_colorkey((0, 0, 0))
+    return kakudais,bb_accs
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -68,13 +87,14 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 300, 200
-    #爆弾
+    # 爆弾
     bb_img = pg.Surface((20, 20))
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
     bb_rct = bb_img.get_rect()
     bb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bb_img.set_colorkey((0, 0, 0))
     vx, vy = +5 , +5
+    
 
     clock = pg.time.Clock()
     tmr = 0
@@ -102,12 +122,18 @@ def main():
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
         screen.blit(kk_img, kk_rct)
-        bb_rct.move_ip(vx, vy)  # 爆弾の移動
+
+        bb_imgs, bb_accs = init_bb_imgs()
+        a = bb_accs[min(tmr//500, 9)]
+        bb_img = bb_imgs[min(tmr//500, 9)]
+        bb_rct.move_ip(vx*a, vy*a)  # 爆弾の移動
         yoko, tate = check_bound(bb_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
+
+        
 
         screen.blit(bb_img, bb_rct)
         pg.display.update()
