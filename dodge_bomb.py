@@ -85,7 +85,7 @@ def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface :
     引数：タプル
     戻り値：Surface
     """
-    
+    return kk_img
 
 
 def main():
