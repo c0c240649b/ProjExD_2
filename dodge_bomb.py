@@ -80,6 +80,14 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     return kakudais,bb_accs
 
 
+def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface :
+    """
+    引数：タプル
+    戻り値：Surface
+    """
+    
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -123,6 +131,7 @@ def main():
 
         screen.blit(kk_img, kk_rct)
 
+        # 爆弾変化
         bb_imgs, bb_accs = init_bb_imgs()
         a = bb_accs[min(tmr//500, 9)]
         bb_img = bb_imgs[min(tmr//500, 9)]
